@@ -1,2 +1,3 @@
-# Console-POS-System-Java-
-A simple pos system coded using java.
+# Console-POS-System-C++-
+A simple pos system coded using C++.
+
