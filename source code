@@ -1,0 +1,586 @@
+#include <iostream>
+#include <stdlib.h>//for "system("cls/pause");
+#include <ctime> //for receipt time and date
+
+using namespace std;
+
+    double tapsi=50; //Price for breakfast
+    double tosi=50;
+    double bangsi=30;
+    double longsi=30;
+    double hotsi=35;
+
+    double burger=25; //Price for snacks
+    double fries=20;
+    double spag=30;
+    double club=30;
+    double sandwich=25;
+
+    double sinigang=50; //price for main dish
+    double nilaga=75;
+    double humba=50;
+    double pinangat=30;
+    double laing=20;
+
+    double mami=30; //price for short order
+    double lomi=40;
+    double lugaw=19;
+    double pancit=30;
+    double bihon=40;
+
+    double coke=18; // price for drinks
+    double royal=18;
+    double water=15;
+
+    double totalAmount=0;
+    double change=0;
+    double addcsh=0;
+    double totalcash=0;
+
+    int qtyTapsi=0;
+    int qtyTosi=0;
+    int qtyBangsi=0;
+    int qtyLongsi=0;
+    int qtyHotsi=0;
+
+    int qty[10000000]; //quantity of ordered item
+    double total=0;
+    int order[10000000]; //order taken
+
+    string username; //login info.
+    string password;
+    time_t now = time(0);
+    char* dt = ctime(&now);
+
+    char s_citizen; //senior citizen discount
+    int cardNo;
+
+    int i; //for loop init
+    int j; //for loop init
+    int Orders=0;
+
+//functions declarations
+    void menu();
+    void bought();
+    void bills();
+    void receipt();
+    void items();
+    void processingOrders();
+    void newTransaction();
+
+int main()
+{
+
+    system("cls");
+    cout << "\n\n";
+    cout << "\t\t\t ::          ::  :::::::::  ::         ::::::     :::::::    :::      :::  ::::::::: \n";
+    cout << "\t\t\t ::    ::    ::  ::         ::        ::         ::     ::   :: :    : ::  ::        \n";
+    cout << "\t\t\t ::    ::    ::  ::         ::       ::         ::       ::  :: ::  :: ::  ::        \n";
+    cout << "\t\t\t ::    ::    ::  ::::::     ::       ::         ::       ::  ::  ::::  ::  ::::::    \n";
+    cout << "\t\t\t ::    ::    ::  ::         ::       ::         ::       ::  ::   ::   ::  ::        \n";
+    cout << "\t\t\t ::    ::    ::  ::         ::        ::         ::     ::   ::        ::  ::        \n";
+    cout << "\t\t\t  ::::::::::::   :::::::::  ::::::::   ::::::     :::::::    ::        ::  ::::::::: \n";
+    cout << endl;
+
+    cout << "Enter name and password" << endl;
+    cout << "\nCashier's Name: ";
+    while (username.empty())
+    {
+        getline(cin, username);
+    }
+
+    cout << "PASSWORD: ";
+    while (password.empty())
+    {
+        getline(cin, password);
+    }
+    menu();
+}
+
+void menu()
+{
+    for (i=Orders+1; i<=10000000; i++)
+    {
+        system("cls");
+        cout << endl;
+        cout << "                                                               ::::       ::::  ::::::::  ::::    ::  ::    ::    \n";
+        cout << "                                                               :: ::     :: ::  ::        :: ::   ::  ::    ::    \n";
+        cout << "                                                               ::  ::   ::  ::  :::::     ::  ::  ::  ::    ::    \n";
+        cout << "                                                               ::   :: ::   ::  ::        ::   :: ::  ::    ::    \n";
+        cout << "                                                               ::    :::    ::  ::::::::  ::    ::::   ::::::     \n";
+        cout << " __________________________________________________________________________________________________________________________________________________________________________________     \n";
+        cout << "|   Item No.      BREAKFAST      |   Item No.     SNACKS           |   Item No.      MAIN DISH              |  Item No.      SHORT ORDER     |  Item No.     DRINKS                |    \n";
+        cout << "|                                |                                 |                                        |                                |                                     |    \n";
+        cout << "|      1       Tapsilog....50    |      6        Burger......25    |      11        Sinigang (Baboy)..50    |     16         Mami.....30     |     21        Coke...........18     |    \n";
+        cout << "|      2       Tosilog.....50    |      7        Fries.......20    |      12        Nilaga (baboy)....75    |     17         Lomi.....40     |     22        Royal..........18     |    \n";
+        cout << "|      3       Bangsilog...30    |      8        Spaghheti...30    |      13        Humba.............50    |     18         Lugaw....19     |     23        Bottled Water..15     |    \n";
+        cout << "|      4       Longsilog...30    |      9        Clubhouse...30    |      14        Pinangat..........30    |     19     Pancit Canton...30  |                                     |    \n";
+        cout << "|      5       Hotsilog....35    |      10       Sandwich....25    |      15        Laing.............20    |     20         Bihon....40     |                                     |    \n";
+        cout << "|________________________________|_________________________________|________________________________________|________________________________|_____________________________________|    \n";
+        cout << "                                                                                                                                                                                        \n";
+        cout << "                               99-PAY ORDER/S                                                           Total Amount: " << total << "                                                   \n";
+        cout << endl;
+
+        cout << "Enter ITEM No: ";
+        cin >> order[i];
+
+        if (order[i]==99)
+        {
+            bought();
+            break;
+        }
+        else if ((order[i] > 23) || (order[i]==0)) //error trapping if user input is 0 or is greater than Item No. 23
+        {
+            cout << "\n\tERROR: Item not found!\n\n";
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
+            system("pause");
+            order[i--];
+        }
+        else if (!cin.good()) //error trapping of user input alphabet or symbols
+        {
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
+            order[i--];
+        }
+        else
+        {
+            cout << "Quantity: ";
+            cin >> qty[i];
+
+            if (!cin.good())
+            {
+                cin.clear();
+                cin.ignore(INT_MAX, '\n');
+                order[i--];
+            }
+            else if (qty[i]==0)
+            {
+                order[i--];
+            }
+            else
+            {
+                //for displaying the Total Amount below the menu.
+                switch (order[i])
+                {
+                case 1:
+                    total=total+tapsi*qty[i];
+                    break;
+                case 2:
+                    total=total+tosi*qty[i];
+                    break;
+                case 3:
+                    total=total+bangsi*qty[i];
+                    break;
+                case 4:
+                    total=total+longsi*qty[i];
+                    break;
+                case 5:
+                    total=total+hotsi*qty[i];
+                    break;
+                case 6:
+                    total=total+burger*qty[i];
+                    break;
+                case 7:
+                    total=total+fries*qty[i];
+                    break;
+                case 8:
+                    total=total+spag*qty[i];
+                    break;
+                case 9:
+                    total=total+club*qty[i];
+                    break;
+                case 10:
+                    total=total+sandwich*qty[i];
+                    break;
+                case 11:
+                    total=total+sinigang*qty[i];
+                    break;
+                case 12:
+                    total=total+nilaga*qty[i];
+                    break;
+                case 13:
+                    total=total+humba*qty[i];
+                    break;
+                case 14:
+                    total=total+pinangat*qty[i];
+                    break;
+                case 15:
+                    total=total+laing*qty[i];
+                    break;
+                case 16:
+                    total=total+mami*qty[i];
+                    break;
+                case 17:
+                    total=total+lomi*qty[i];
+                    break;
+                case 18:
+                    total=total+lugaw*qty[i];
+                    break;
+                case 19:
+                    total=total+pancit*qty[i];
+                    break;
+                case 20:
+                    total=total+bihon*qty[i];
+                    break;
+                case 21:
+                    total=total+coke*qty[i];
+                    break;
+                case 22:
+                    total=total+royal*qty[i];
+                    break;
+                case 23:
+                    total=total+water*qty[i];
+                    break;
+                } //switch closing bracket
+            }//nested else closing bracket
+        } //else  closing brcket
+    Orders++;
+    } //for loop closing bracket
+}
+
+void processingOrders()
+{
+    for (int a=1; a<=order[i]; a++)
+        {
+            switch (order[a])
+            {
+                case 1:
+                    cout << "\t\t\t|\t    " << a << " \t\t Tapsilog \t\t " << qty[a] << "\t\t " << tapsi*qty[a] << "\t|" << endl;
+                    break;
+                case 2:
+                    cout << "\t\t\t|\t    " << a << " \t\t Tosilog \t\t " << qty[a] << "\t\t "<< tosi*qty[a] << "\t|" << endl;
+                    break;
+                case 3:
+                    cout << "\t\t\t|\t    " << a << " \t\t Bangsilog \t\t " << qty[a] << "\t\t " << bangsi*qty[a] << "\t|" << endl;
+                    break;
+                case 4:
+                    cout << "\t\t\t|\t    " << a << " \t\t Longsilog \t\t " << qty[a] << "\t\t " << longsi*qty[a] << "\t|" << endl;
+                    break;
+                case 5:
+                    cout << "\t\t\t|\t    " << a << " \t\t Hotsilog \t\t " << qty[a] << "\t\t "  << hotsi*qty[a] << "\t|" << endl;
+                    break;
+                case 6:
+                    cout << "\t\t\t|\t    " << a << " \t\t Burger \t\t " << qty[a] << "\t\t "  << burger*qty[a] << "\t|" << endl;
+                    break;
+                case 7:
+                    cout << "\t\t\t|\t    " << a << " \t\t Fries \t\t\t " << qty[a] << "\t\t "  << fries*qty[a] << "\t|" << endl;
+                    break;
+                case 8:
+                    cout << "\t\t\t|\t    " << a << " \t\t Spaghetti \t\t " << qty[a] << "\t\t "  << spag*qty[a] << "\t|" << endl;
+                    break;
+                case 9:
+                    cout << "\t\t\t|\t    " << a << " \t\t Clubhouse \t\t " << qty[a] << "\t\t "  << club*qty[a] << "\t|" << endl;
+                    break;
+                case 10:
+                    cout << "\t\t\t|\t    " << a << " \t\t Sandwich \t\t " << qty[a] << "\t\t "  << sandwich*qty[a] << "\t|" << endl;
+                    break;
+                case 11:
+                    cout << "\t\t\t|\t    " << a << " \t\t Sinigang \t\t " << qty[a] << "\t\t "  << sinigang*qty[a] << "\t|" << endl;
+                    break;
+                case 12:
+                    cout << "\t\t\t|\t    " << a << " \t\t Nilaga \t\t " << qty[a] << "\t\t "  << nilaga*qty[a] << "\t|" << endl;
+                    break;
+                case 13:
+                    cout << "\t\t\t|\t    " << a << " \t\t Humba \t\t\t " << qty[a] << "\t\t "  << humba*qty[a] << "\t|" << endl;
+                    break;
+                case 14:
+                    cout << "\t\t\t|\t    " << a << " \t\t Pinangat \t\t\t " << qty[a] << "\t\t "  << laing*qty[a] << "\t|" << endl;
+                    break;
+                case 15:
+                    cout << "\t\t\t|\t    " << a << " \t\t Laing \t\t " << qty[a] << "\t\t "  << pinangat*qty[a] << "\t|" << endl;
+                    break;
+                case 16:
+                    cout << "\t\t\t|\t    " << a << " \t\t Mami \t\t\t " << qty[a] << "\t\t "  << mami*qty[a] << "\t|" << endl;
+                    break;
+                case 17:
+                    cout << "\t\t\t|\t    " << a << " \t\t Lomi \t\t\t " << qty[a] << "\t\t "  << lomi*qty[a] << "\t|" << endl;
+                    break;
+                case 18:
+                    cout << "\t\t\t|\t    " << a << " \t\t Lugaw \t\t\t " << qty[a] << "\t\t "  << lugaw*qty[a] << "\t|" << endl;
+                    break;
+                case 19:
+                    cout << "\t\t\t|\t    " << a << " \t\t Pancit Canton \t\t " << qty[a] << "\t\t "  << pancit*qty[a] << "\t|" << endl;
+                    break;
+                case 20:
+                    cout << "\t\t\t|\t    " << a << " \t\t Pancit Bihon \t\t " << qty[a] << "\t\t "  << bihon*qty[a] << "\t|" << endl;
+                    break;
+                case 21:
+                    cout << "\t\t\t|\t    " << a << " \t\t Coke \t\t\t " << qty[a] << "\t\t "  << coke*qty[a] << "\t|" << endl;
+                    break;
+                case 22:
+                    cout << "\t\t\t|\t    " << a << " \t\t Royal \t\t\t " << qty[a] << "\t\t "  << royal*qty[a] << "\t|" << endl;
+                    break;
+                case 23:
+                    cout << "\t\t\t|\t    " << a << " \t\t Bottled Water \t\t " << qty[a] << "\t\t "  << water*qty[a] << "\t|" << endl;
+                    break;
+            }
+        }
+}
+void bought() //items bought, function for removing items
+{
+    char surebol;
+    int item;
+
+    system("cls");
+        cout << "\n\n\t\t\t\t\t\t\t BOUGHT ";
+        cout << "\n\t\t\t=========================================================================\n";
+        cout << "\t\t\t|\t ORDER No. \t ITEM ORDERED \t\t QTY \t\t PRICE\t|\n";
+        processingOrders();
+
+        cout << "\t\t\t=========================================================================\n";
+        cout << "\t\t\t\t\t\t\t\t\t\t  TOTAL: " << total << endl;
+
+        char add_Item;
+        Error01:
+            cout << "\n\t\tWant to ADD ITEM? [Y/N]: ";
+            cin >> add_Item;
+
+            if ((add_Item == 'Y') || (add_Item == 'y'))
+            {
+                menu();
+            }
+            else if ((add_Item == 'N') || (add_Item == 'n'))
+            {
+                Error02:
+                cout << "\n\t\tWant to REMOVE ITEM? [Y/N]: ";
+                cin >> surebol;
+
+                if ((surebol == 'Y') || (surebol == 'y'))
+                {
+                    Error03:
+                    cout << "\n\t\tEnter ORDER No. you want to void: ";
+                    cin >> item;
+
+                    for (int b=item; b<=order[i]; b++)
+                    {
+                        if (!cin.good())
+                        {
+                            cout << "\n\t\tERROR: Invalid Value!\n";
+                            cin.clear();
+                            cin.ignore(INT_MAX, '\n');
+                            goto Error03;
+                        }
+
+                        order[b]=0;
+
+                        switch(item)
+                        {
+                        case 1:
+                            total=total-tapsi*qty[b];
+                            break;
+                        case 2:
+                            total=total-tosi*qty[b];
+                            break;
+                        case 3:
+                            total=total-bangsi*qty[b];
+                            break;
+                        case 4:
+                            total=total-longsi*qty[b];
+                            break;
+                        case 5:
+                            total=total-hotsi*qty[b];
+                            break;
+                        case 6:
+                            total=total-burger*qty[b];
+                            break;
+                        case 7:
+                            total=total-fries*qty[b];
+                            break;
+                        case 8:
+                            total=total-spag*qty[b];
+                            break;
+                        case 9:
+                            total=total-club*qty[b];
+                            break;
+                        case 10:
+                            total=total-sandwich*qty[b];
+                            break;
+                        case 11:
+                            total=total-sinigang*qty[b];
+                            break;
+                        case 12:
+                            total=total-nilaga*qty[b];
+                            break;
+                        case 13:
+                            total=total-humba*qty[b];
+                            break;
+                        case 14:
+                            total=total-pinangat*qty[b];
+                            break;
+                        case 15:
+                            total=total-laing*qty[b];
+                            break;
+                        case 16:
+                            total=total-mami*qty[b];
+                            break;
+                        case 17:
+                            total=total-lomi*qty[b];
+                            break;
+                        case 18:
+                            total=total-lugaw*qty[b];
+                            break;
+                        case 19:
+                            total=total-pancit*qty[b];
+                            break;
+                        case 20:
+                            total=total-bihon*qty[b];
+                            break;
+                        case 21:
+                            total=total-coke*qty[b];
+                            break;
+                        case 22:
+                            total=total-royal*qty[b];
+                            break;
+                        case 23:
+                            total=total-water*qty[b];
+                            break;
+                        } //switch closing
+                        bought();
+                        break;
+                    } //for loop closing bracket
+                }
+                else if ((surebol == 'N') || (surebol == 'n'))
+                {
+                    bills();
+                }
+                else
+                {
+                    cout << "\n\t\tERROR: Invalid Value!\n";
+                    goto Error02;
+                }
+            } //else if closing bracket
+            else
+            {
+                cout << "\n\t\tERROR: Invalid Value!\n";
+                bought();
+            }
+
+
+}
+
+void bills() //function for bills and payment
+{
+    system("cls");
+    cashError:
+        totalAmount = (total*.12) + total;
+        cout << "\n=====================================================================\n";
+        cout << "\t\t\t\tBILLS\n";
+        cout << "---------------------------------------------------------------------\n";
+        cout << "\n\t\t\tTotal: \t\t\t" << total<< endl;
+        cout << "\t\t\tVAT  :       " << "\t\t12%" << endl;
+        cout << "\t\t\t___________________________" << endl;
+        cout << "\t\t\tTOTAL AMOUNT: \t\t" <<totalAmount << endl;
+        cout << "=====================================================================\n";
+
+        Error04:
+        cout << "\n\t\tCash: ";
+        while (!(cin >> totalcash))
+        {
+            cin >> totalcash;
+            cout << "\tERROR: Invalid Value!" << endl;
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
+            goto cashError;
+            break;
+        }
+        if (totalcash<totalAmount)
+        {
+            do
+            {
+                cout << "\n\t\tNot Enough Cash....\n";
+                cout << "\n\t\tAdd payment: ";
+                cin >> addcsh;
+                totalcash=totalcash+addcsh;
+                cout << "\n\tTotal cash: " << totalcash << endl;
+            }while (totalcash<totalAmount);
+
+            if (totalcash>=totalAmount)
+            {
+                change=totalcash-totalAmount;
+                cout << "---------------------------------------------------------------------\n";
+                cout << "\n\t\tChange: " << change << endl;
+                system("pause");
+                receipt();
+            }
+        }
+        else if(totalcash >= totalAmount)
+        {
+            change=totalcash-totalAmount;
+            cout << "---------------------------------------------------------------------\n";
+            cout << "\n\t\tChange: " << change << endl << endl;
+            system("pause");
+            receipt();
+        }
+        else
+        {
+            cout << "\t\tERROR: Invalid Value!\n";
+            goto Error04;
+        }
+}
+
+void receipt()
+{
+    items();
+
+    cout << "\t\t ========================================================\n";
+    cout << "\t\t |  Cashier: " << username << "\t\t\t\t\t|" << endl;
+    cout << "\t\t |   TOTAL (VAT 12% included)\t\t " << totalAmount << "\t\t|" << endl;
+    cout << "\t\t |   SENIOR ID CARD No: \t\t " << cardNo << "\t\t|" << endl;
+    cout << "\t\t |   CASH \t\t\t\t " << totalcash << "\t\t|" << endl;
+    cout << "\t\t |   CHANGE \t\t\t\t " << change << "\t\t|" << endl;
+    cout << "\t\t ========================================================\n";
+
+    newTransaction();
+}
+
+void items() // function for displaying receipt
+{
+        system("cls");
+        cout << endl << endl;
+        cout << "\t\t\t                            ______          _            \n";
+        cout << "\t\t\t                           |     /     ____| |           \n";
+        cout << "\t\t\t                           |  __/ __ (_  __| |_  __      \n";
+        cout << "\t\t\t                           |  | | __1_\\  \\   _/  _ 1   \n";
+        cout << "\t\t\t                           |  | | __/__)  )  |  (_) |    \n";
+        cout << "\t\t\t                           |__| 1__|(_____/__ 1____/     \n";
+        cout << "\t\t\t=========================================================================\n";
+        cout << "\t\t\t|                Address: ABCDE 12, HIJKL Drive, Philippines            |\n";
+        cout << "\t\t\t|                         TIN: 0000-0123-4567-8910                      |\n";
+        cout << "\t\t\t|                        Email: myEmail@email.com                       |\n";
+        cout << "\t\t\t|=======================================================================|\n";
+        cout << "\t\t\t|\t\t              SALES INVOICE \t\t\t        |\n";
+        cout << "\t\t\t|=======================================================================|\n";
+        cout << "\t\t\t|\t ORDER No. \t ITEM ORDERED \t\t QTY \t\t PRICE\t|\n";
+
+        processingOrders();
+}
+
+void newTransaction()
+{
+    char answer01;
+        Error05: //for another transaction
+            cout << "\n\n\n\tANOTHER TRANSACTION? [Y/N]: ";
+            cin >> answer01;
+
+           if ((answer01=='Y') || (answer01=='y'))
+            {
+                system("cls");
+                total=0;
+                Orders=0;
+                username.clear();
+                password.clear();
+                main();
+            }
+            else if ((answer01 =='N')|| (answer01 =='n'))
+            {
+                cout << "\n\n\tLogging out...\n";
+                cout << "\tProgram quitting...\n\n";
+                system("pause");
+            }
+            else
+            {
+                cout << "\n\tERROR!: Invalid Value! \n";
+                goto Error05;
+            }
+}
